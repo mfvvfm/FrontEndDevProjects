@@ -37,33 +37,42 @@ function getProfiles(json) {
 function generateHTML(data) {
   data.forEach( person => {
     const section = document.createElement('section');
-    peopleList.appendChild(section);Check if request returns a 'standard' page from Wiki
-      // Check if request returns a 'standard' page from Wiki
-      if (person.type === 'standard') {
-        section.innerHTML = `
-          <img src=${person.thumbnail.source}>
-          <h2>${person.title}</h2>
-          <p>${person.description}</p>
-          <p>${person.extract}</p>
-        `;
-      } else {
-        section.innerHTML = `
-          <img src="img/profile.jpg" alt="ocean clouds seen from space">
-          <h2>${person.title}</h2>
-          <p>Results unavailable for ${person.title}</p>
-          ${person.extract_html}
-        `;
-      }
-    });
-  }
+    peopleList.appendChild(section);
+    // Check if request returns a 'standard' page from Wiki
+    if (person.type === 'standard') {
+      section.innerHTML = `
+        <img src="${person.thumbnail ? person.thumbnail.source : ''}">
+        <h2>${person.title}</h2>
+        <p>${person.description}</p>
+        <p>${person.extract}</p>
+      `;
+    } else {
+      section.innerHTML = `
+        <img src="img/profile.jpg" alt="ocean clouds seen from space">
+        <h2>${person.title}</h2>
+        <p>Results unavailable for ${person.title}</p>
+        ${person.extract_html}
+      `;
+    }
+  });
+}
 
 btn.addEventListener('click', (event) => {
+  // Set the text content of the button on click with below code
+  event.target.textContent = "Loading...";
   getJSON(astrosUrl)
     // we call '.then()' then pass it a reference to getProfiles
     .then(getProfiles)
     // logging data to console by passing a function with the parameter data, which represents the data returned by getProfiles. Once promise is fulfilled this handler function will be called asynchronously and it's going to return a value, the wiki data is JSON
     .then(generateHTML)
-    .catch( err => console.log(err) )
-
-    event.target.remove()
+    //in the catch method open up a set of curly braces since we're going to pass multiple lines of code
+    // set innerHTML of the main peopleList div to display h3 with text
+    .catch( err => {
+      peopleList.innerHTML = '<h3>Something went wrong!</h3>';
+      console.log(err)
+    })
+    //then chain the finally method to the end of the promise sequence
+    // Finally takes a func that i scalled when the promise is settled
+  // next pass code that removes button from page 'event.target.remove()'
+    .finally( () => event.target.remove() )
   });
