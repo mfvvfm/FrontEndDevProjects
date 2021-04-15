@@ -65,3 +65,13 @@ function generateHTML(data) {
     // removes event button
     event.target.remove();
 });
+
+/*Previous videos explained what asynchronous code, callbacks, and the call stack are. A video in the teacher's notes explained what the event loop is. So in this video Guil baffled me by using Chrome's debugger to synchronously step through asynchronous code with accompanying weird call stack behaviour. Here are the explanations and solutions I came up with to understand this part.
+
+1. To debug in Chrome Guil uses the "step into" button (F11) instead of the "step" button (F9). This causes the Chrome debugger to simulate stepping trough the asynchronous code "synchronously". For instance, notice how the generateHTML function immediately gets called for the first astronaut, instead of after all the astronaut data requests are posted. Guil partially hides this by by using "step over" for the last steps. Also notice how the xhr.send(); line never gets called, because the debugger miraculously immediatly steps into the callback function. When I used "step" instead of "step into", and after my next point, the debugger and call stack (and the implied callback queue) began to behave asynchronously as the previous lessons had explained.
+
+2. Notice how the call stack even shows functions that have finished? If a function does an XHR request, I would expect that that function must finish and the call stack be empty before the next callback function can be handled. However we see such functions seemingly remain on or reenter the call stack. This seems to be a trick that Chrome DevTools uses to also show us the stack of functions that created the callback function. I can see why this can be very helpful if you know why these imaginary call stack functions are there. This call stack behaviour for async functions is default turned on. You can toggle this behaviour in DevTools in Settings (the wheel icon, F1), scroll down a bit, and then under Debugger, Disable async stack traces (on/off).
+
+3. The example code is riddled with anonymous functions. The call stack shows "anonymous" with a line number to indicate which one. That in itself made learning to debug code harder to understand, especially with the above issues. So just this once (I hope), for the educational purpose of wrapping my head around how the debugger works for asynchronous callback functions, I rewrote the code of callback.js. I duplicated the getJSON function to differentiate its two usages, and I named all anynymous functions with very explicit names. Debugging that explicit code helped me to better understand the different kinds of stepping and the two kinds of call stack for async functions.
+
+*/
