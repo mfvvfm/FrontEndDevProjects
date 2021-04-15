@@ -4,16 +4,32 @@ const peopleList = document.getElementById('people');
 const btn = document.querySelector('button');
 
 // Handle all fetch requests
+  // 7. create try catch function
+  async function getJSON(url) {
+    // below will contain all the code tha tneeds to be executed
+    try {
+      // below is the data fetching statements, initialise a variable named response whose value awaits the promise returned by fetch passing it 'url'
+      const response = await fetch(url);
+      // then return await response.json, means that the function will wait for 'response.json' to resolve or reject
+      return await response.json();
+    // any code inside catch will be executed if an exception is thrown in the try block, error represent the error object
+    } catch (error) {
+      throw error;
+    }
+  }
+
 // 1. declare async func named below, this function will first make a fetch request to open notify API then use results to make fetch requests to the wikipeadie API
 async function getPeopleInSpace(url) {
   //in body of func, start by making the first network request using fetch method, it will be to the open notify API to get names of the people and space, declare variable named peopleResponse to capture the value returned from fetch passing it URL as its argument
  // fetch returns a promise keyword 'await' is used to handle the promise
   // await keyword is going to wait for a resolved promise returned by fetch
   // then it's going to get fulfillment value out of the promise and assign it to peopleResponse
-  const peopleResponse = await fetch(url);
+  // 8. no longer going to call fetch instead we'll call getJSON function, delete var 'const peopleResponse = await fetch(url);'
+
   // parse response from fetch to json
   // once again we'll await the JSON data by including await in front of peopleResponse.json
-  const peopleJSON = await peopleResponse.json();
+  // 8.1 set value of peopleJSON to await getJSON passing it the url to fetch
+  const peopleJSON = await getJSON(url);
 
   // 2. Continue by making next set of network requests, we'll map over array of objects stored in peopleJSON and fetch data from the wiki API based on the return names of people in space
   // we want to iterate over the people property of each JSON object
@@ -24,10 +40,11 @@ async function getPeopleInSpace(url) {
     const craft = person.craft;
     // 3. declare var named profileRes that awaits response object from fetch, passing wikipedia URL which is stored in wikiURL
     // then we concantenate the value of a person object's name property on each iteration with '+ person.name'
-    const profileResponse = await fetch(wikiUrl + person.name);
+    // 9. also delete '    const profileResponse = await fetch(wikiUrl + person.name);'
     // after that declare a variable named profileJSON. here we await a resolved promise from 'profileResponse.json'
     // Any code that calls 'await' needs to be wrapped in an async func
-    const profileJSON = await profileResponse.json();
+    // 10. set 'profileJSON' to 'await getJSON;', passing it 'wikiUrl + person.name'
+    const profileJSON = await getJSON(wikiUrl + person.name);
 
   // 4.1 then we combine craft data with astronaut profiles data by returning an object, inside obj use spread operator to copy all the properties from the profileJSON obj onto this new obj
   // along with the craft property value
