@@ -46,7 +46,8 @@ function generateHTML(data) {
   }
   //create an eventlistner for the button, as the second argument pass an anonymous function as the callback which will run getJSON as soon as event is clicked
   // Pass a callback to get JSON that will iterate over the return data and make a GET request to wiki API for each person returned
-  btn.addEventListener('click', () => {
+  // event added to remove button on click
+  btn.addEventListener('click', (event) => {
     // Once parent operations are complete this executes
     // This callback is now receiving JSON data passed to it from its parent func getJSON
     // parameter 'json' represents our data
@@ -61,4 +62,6 @@ function generateHTML(data) {
         getJSON(wikiUrl + person.name, generateHTML);
     });
   });
+    // removes event button
+    event.target.remove();
 });
