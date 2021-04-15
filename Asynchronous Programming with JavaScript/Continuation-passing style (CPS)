@@ -1,0 +1,22 @@
+function add(x, y, callback) {
+  callback(x + y)
+}
+function subtract(x, y, callback) {
+  callback(x - y);
+}
+function multiply(x, y, callback) {
+  callback(x * y);
+}
+function calculate(x, callback) {
+  callback(x);
+}
+
+calculate(5, (n) => {
+  add(n, 10, (n) => {
+    subtract(n, 2, (n) => {
+      multiply(n, 5, (n) => {
+        console.log(n); // 65
+      });
+    });
+  });
+});
