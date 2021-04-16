@@ -21,19 +21,42 @@ function fetchData(url) {
     .catch(error => console.log('Problem', error))
 }
 
+/* 12. 'Promise.all' can fetch our two URLs, wait for both to resolve before continuing on. And once resolved use their results to generate the options list and image all in onr operation*/
+// 'Promise.all()' accepts any iterable like a string or an array, this then composes multiple promises into a single returned promise
+
+Promise.all([
+  //inside array add 'fetchData'
+  fetchData('https://dog.ceo/api/breeds/list'),
+  fetchData('https://dog.ceo/api/breeds/image/random')
+])
+// so now we can call '.then()' on the new promise by chaining a '.then()' method to 'Promise.all', so when Promise is a success the return result is an array of values
+.then(data => {
+  // assign each obj to a variable using their array index, '.message' is property we need to access from each obj
+  const breedList = data[0].message;
+  // then assign URL to the variable randomImage
+  const randomImage = data[1].message;
+
+  // Call generateOptions func passing it 'breedList'
+  generateOptions(breedList);
+  // call generateImage
+  generateImage(randomImage);
+  // 3, 6, 7.1 can be deleted as it's all being handled here in promise.all
+})
+
+
 /* 4. Create a new fetch request, pass method url */
 // 7.1 change 'fetch' to 'fetchData'
-fetchData('https://dog.ceo/api/breeds/list')
+//fetchData('https://dog.ceo/api/breeds/list')
 // 4.1 Chain '.then()' method that converts data and response to json
 // 7.2 Since data is already being returned in JSON delete '  .then(response => response.json())' that parse reponse
 // 4.2 Once we have our json data we can render list of options inside select element
 // 6. Call 'generateOptions' in our '.then()' method passing it 'data.message'
-  .then(data => generateOptions(data.message))
+ // .then(data => generateOptions(data.message))
 
 /* 2. First type fetch method and pass URL to fetch as string, this will return a Promise.
  Promises are executed in sequence */
 // 7.1 change 'fetch' to 'fetchData'
-fetchData('https://dog.ceo/api/breeds/image/random')
+//fetchData('https://dog.ceo/api/breeds/image/random')
   // 2.1 Next chain a then method to fetch and pass func using arrow func that takes a parameter 'response'.
  // Data is in the body of property of the response object API returns data in JSON so in order to access and use the data, we need to parse it to JSON first which is then implicily returned due to our arrow func
 // 7.2 Since data is already being returned in JSON delete '  .then(response => response.json())' that parse reponse
@@ -41,7 +64,7 @@ fetchData('https://dog.ceo/api/breeds/image/random')
 // In second then method pass a func that takes the json data via parameter'data'
 // To access value of message where image is stored log 'data.message' which then produces URL as string
 // 3. To populate page with IMG, create call to func named 'generateImage' passing it 'data'message'
-  .then(data => generateImage(data.message))
+//  .then(data => generateImage(data.message))
 // ------------------------------------------
 //  HELPER FUNCTIONS
 // ------------------------------------------
