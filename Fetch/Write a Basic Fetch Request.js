@@ -13,8 +13,12 @@ const form = document.querySelector('form');
 */
 function fetchData(url) {
   return fetch(url)
+  // 11.1 Pass this '.then()' method chained to fetch the checkStatus func
+    .then(checkStatus)
   // here we parse the json
     .then(res => res.json())
+  // 10. chaining catch to end of fetch data sequences
+    .catch(error => console.log('Problem', error))
 }
 
 /* 4. Create a new fetch request, pass method url */
@@ -41,6 +45,21 @@ fetchData('https://dog.ceo/api/breeds/image/random')
 // ------------------------------------------
 //  HELPER FUNCTIONS
 // ------------------------------------------
+
+/* 11. create new func to check if promise resolved with the res[onse obj is ok === true
+  Pass it via the parameter 'response'
+*/
+
+function checkStatus(response) {
+  //  if promise.ok is true promise is resolved with the response
+  if(response.ok) {
+    // this returns a promise obj that is resolved with the given value, in this case the response obj
+    return Promise.resolve(response);
+  } else {
+    // if response is unsucessful we will reject promise which activates catch call, pass it 'Error' obj and as the error description pass it the response status text this solves any HTTP errors
+    return Promise.reject(new Error(response.statusText));
+  }
+}
 
 /* 5. Now we can to map or iterate over the items in the array, place them inside option elements and insert them into the select menu */
   function generateOptions(data) {
