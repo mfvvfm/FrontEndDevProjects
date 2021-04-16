@@ -144,6 +144,41 @@ select.addEventListener('change', fetchBreedImage);
 // And when the user clicks anywhere inside the card it will load random img of the selected breed
 card.addEventListener('click', fetchBreedImage);
 
+// 13.1 This connects the form to the postData func api in the eventListeners, adding 'submit' event and 'postData' func as callback
+form.addEventListener('submit', postData);
+
 // ------------------------------------------
 //  POST DATA
 // ------------------------------------------
+
+/* 13. Create func that uses fetch to post name and comment form data to server on submit*/
+
+function postData(e) {
+  // This cancels browsers default submit behaviour
+  e.preventDefault();
+  // assigns value of name input field
+  const name = document.getElementById('name').value;
+  // assigns value of comment textarea
+  const comment = document.getElementById('comment').value;
+
+  // 14. To make things easier to manage and read write config obj separetely, e.g. assign obj to variable config then pass the config variable as the second argument to fetch
+  const config = {
+    // here we are creating and passing objects, method is type of request so as the value for method write POST
+    method: 'POST',
+    // headers for request are usually contained in an obj, this communicates to the server that the data has been encoded with JSON
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // in POST requests values are sent to the server in the body of the request, so first the form data needs to be stringified/transformed into a JSON string to convert values of name and comment into a JSON string and set their values to the variable name and comment
+    body: JSON.stringify({ name: name, comment: comment })
+}
+
+  // Create a request using 'fetch('')'
+  fetch('https://jsonplaceholder.typicode.com/comments', config)
+  // '.then()' checks status of data response
+    .then(checkStatus)
+  // next chain a second '.then()' method to parse response to JSON
+    .then(res => res.json())
+  // third '.then()' to handle the data
+    .then(data => console.log(data))
+}
