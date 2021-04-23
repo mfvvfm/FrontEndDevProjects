@@ -18,6 +18,7 @@
 
 header {
   grid-area: header;
+  background-color: #fff;
 }
 
 nav {

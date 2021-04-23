@@ -1,4 +1,4 @@
-/* =====================================
+/* ===================================== 
    Page Styles
 ======================================== */
 
@@ -31,7 +31,7 @@ p {
   border-radius: 0.25em;
 }
 .card h1 {
-  color: #278da4;
+  color: #278da4; 
   margin: 0.35em 0 0;
   line-height: 1.25;
 }
@@ -49,6 +49,6 @@ p {
   background-color: rgba(39, 141, 164, 0.8);
 }
 .material-icons {
-  color: rgba(39, 141, 164, 0.8);
+  color: rgba(39, 141, 164, 0.8); 
   font-size: 2.1em;
 }
