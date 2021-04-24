@@ -50,15 +50,10 @@ const Player = (props) => {
 // We are extending from React.Component part of React's API for component class definition
 // this refers to component instance
 class Counter extends React.Component {
-  constructor() {
-    /* Super calls the constructor of the component class we're extending */
-    super()
-    this.state = {
-      /* Since state is data that changes over time, we first need to set an intial state, the state is our Counter
-        is going to be the score we want to display for each player*/
-        score: 0
-    };
-  }
+
+  state = {
+    score: 0
+  };
 
   render() {
     return (
